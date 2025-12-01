@@ -1,3 +1,8 @@
+# Harness temp files
+tmp/
+
+# Can you tell I copy pasted the below stuff
+
 # Dependencies
 node_modules/
 npm-debug.log*
