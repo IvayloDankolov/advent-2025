@@ -2,6 +2,10 @@
 
 A small runner harness and solutions to the problems from Advent of Code 2025.
 
+## How do I run this
+
+Make sure you have the standard dev environment for whatever language the day's problem is in your PATH. For the test harness, you'll need Node.js. Make sure it's in  and do `./advent N` in your terminal where N is the problem number.
+
 ## What language is it in?
 
 I figured let's make a lottery so each new day is a pleasant surprise. So by the completely fair and objective criteria of "whatever name came to mind next", we're going to draw from this list:
