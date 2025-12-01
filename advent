@@ -10,4 +10,9 @@ if ! command -v npm &> /dev/null; then
     exit 1
 fi
 
+if [ ! -d "node_modules" ]; then
+    echo "Installing dependencies..."
+    npm install
+fi
+
 npm start --silent -- "$@"
