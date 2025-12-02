@@ -46,3 +46,39 @@ Overall, I get that it's a bit of a catch 22 with having to support old code, bu
 
 Errors from getting the template types wrong aside, yeah, first try.
 Let me do a quick refactor pass before I pass judgement.
+
+### Refactors
+
+Obviously hiding scan in a utils file reduces the code a bit. Another big one I
+realised you can do is basically roll my own `InputRangeOf<T>` concept that does the
+range value assertion. Why that isn't the standard and recommended way to use them,
+honestly I have no clue. It seems like such a no brainer.
+
+After that and some aliasing we're basically left with:
+
+```language:c++
+int apply_rotation(int current_dial, int rotation)
+{
+    int remainder = (current_dial + rotation) % DIAL_SIZE;
+    return remainder < 0 ? remainder + DIAL_SIZE : remainder;
+}
+
+int count_dial_hits(int desired_position, int start_position, InputRangeOf<int> auto &&rotations)
+{
+    auto filtered_positions = rotations |
+                              lazy_scan(start_position, apply_rotation) |
+                              views::filter([desired_position](int dial_position)
+                                            { return dial_position == desired_position; });
+    return ranges::distance(filtered_positions);
+}
+```
+
+I guess yeah, at that point I can see the vision. I'd call myself pretty damned good at C++ though, even if I haven't followed 20 and 23 much (so in C++ terms a 3.5/10, with Bjarne being a 7/10)
+
+Anyway, on to part 2
+
+### Part 2
+
+OK, I see now, it's just an elaborate troll to make it annoying for people trying to write functional C++.
+
+In all seriousness though if part 1 was 0.1/10 this is 0.2/10, but I guess that's alright for a gentle intro.
