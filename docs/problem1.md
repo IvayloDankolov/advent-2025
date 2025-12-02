@@ -10,7 +10,7 @@ Although it did keep edging me out with Lua for a solide 5 seconds.
 
 At this point, I'm hilariously out of time, so I guess it's a good thing these release every other day.
 
-# Day 2
+# 24 hours lateeer
 
 Alright, so I guess this is going to be mostly stream of consciousness stuff. I'll try to keep it fairly organised.
 
