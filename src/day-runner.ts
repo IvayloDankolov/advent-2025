@@ -47,9 +47,7 @@ export async function executeDay(dayId: string, args: string[] = []) {
         }
     }
 
-    const output = await runner.run(sourcePath, args);
-
-    console.log(output);
+    await runner.run(sourcePath, args);
 
     if (runner.teardown) {
         await runner.teardown(sourcePath);
