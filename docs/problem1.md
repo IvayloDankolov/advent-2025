@@ -82,3 +82,11 @@ Anyway, on to part 2
 OK, I see now, it's just an elaborate troll to make it annoying for people trying to write functional C++.
 
 In all seriousness though if part 1 was 0.1/10 this is 0.2/10, but I guess that's alright for a gentle intro.
+
+Can't really avoid expressing this structurally though as (pos, rollovers) -> rotation -> (new_pos, new_rollovers), so our pretty operation chain is gone and we fold instead.
+
+Speaking of folding of course clang does not have fold_left implemented yet... bleeding edge standards and all that.
+
+And of course full disclosure yes I arrogantly fell directly for the rollover gotcha. In this case doing a LN rotation when you're at N and not counting that as a "rollover" since it has quotient 0 and doesn't go negative. Sneaky little bugger.
+
+It does make the negative (left rotation) case a tad ugly but meh.

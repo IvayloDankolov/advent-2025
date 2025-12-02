@@ -60,3 +60,27 @@ auto lazy_scan(auto initial_state, auto f)
 {
     return ScanAdaptor<std::decay_t<decltype(initial_state)>, std::decay_t<decltype(f)>>{std::move(initial_state), std::move(f)};
 }
+
+template <
+    std::ranges::input_range R,
+    typename Init,
+    typename F>
+constexpr auto fold_left(R &&r, Init init, F f)
+{
+    for (auto &&e : r)
+        init = std::invoke(f, std::move(init), std::forward<decltype(e)>(e));
+
+    return init;
+}
+
+std::tuple<int, int> divmod(int numerator, int denominator)
+{
+    int quotient = numerator / denominator;
+    int remainder = numerator % denominator;
+    if (remainder < 0)
+    {
+        remainder += abs(denominator);
+        quotient -= 1;
+    }
+    return {quotient, remainder};
+}
