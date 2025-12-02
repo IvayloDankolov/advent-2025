@@ -6,24 +6,29 @@ A small runner harness and solutions to the problems from Advent of Code 2025.
 
 Clone and make sure you have gitlfs enabled if you want the amazing content of all the language random rolls.
 
-Make sure you have the standard dev environment for whatever language the day's problem is in your PATH. For the test harness, you'll need Node.js. Make sure it's in  and do `./advent N` in your terminal where N is the problem number.
+Make sure you have the standard dev environment for whatever language the day's problem is in your PATH. For the test harness, you'll need Node.js. Make sure it's in and do `./advent N[a|b]` in your terminal where N is the day number and
+a and b are the easier/harder problem for that day.
+
+Technically the test
+
+The rest of the arguments get passed to the solver program. This isn't strictly speaking something required, but by convention most will take 1 argument that's their input file
 
 ## What language is it in?
 
 I figured let's make a lottery so each new day is a pleasant surprise. So by the completely fair and objective criteria of "whatever name came to mind next", we're going to draw from this list:
 
-* C++
-* Rust
-* Haskell
-* Python
-* Typescript
-* Java
-* Clojure
-* Swift
-* Kotlin
-* C#
-* Go
-* Lua
+-   C++
+-   Rust
+-   Haskell
+-   Python
+-   Typescript
+-   Java
+-   Clojure
+-   Swift
+-   Kotlin
+-   C#
+-   Go
+-   Lua
 
 Also, apparently the most popular language according to Stack Overflow is Javascript again, and I'm not writing a test harness in that so we'll compromise with Typescript.
 

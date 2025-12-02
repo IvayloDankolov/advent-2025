@@ -1,6 +1,9 @@
 # Harness temp files
 tmp/
 
+# Private inputs
+input/private
+
 # Can you tell I copy pasted the below stuff
 
 # Dependencies

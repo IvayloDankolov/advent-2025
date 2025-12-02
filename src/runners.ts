@@ -2,7 +2,7 @@ import child from "child_process";
 import { unlink } from "fs/promises";
 import { promisify } from "util";
 import { TEMP_DIR } from "./constants.js";
-import { isExecError } from "./utils.js";
+import { execPiped, isExecError } from "./utils.js";
 
 const exec = promisify(child.exec);
 
@@ -11,7 +11,7 @@ export type Runner = {
     fileExtension: string;
 
     setup?: (sourcePath: string) => Promise<boolean>;
-    run: (sourcePath: string, args: string[]) => Promise<string>;
+    run: (sourcePath: string, args: string[]) => Promise<void>;
     teardown?: (sourcePath: string) => Promise<void>;
 };
 
@@ -36,18 +36,11 @@ const languageRunners = {
             }
         },
         run: async (_sourcePath: string, args: string[]) => {
-            try {
-                const { stdout } = await exec(
-                    `${TEMP_DIR}/problem.out ${args.join(" ")}`
-                );
-                return stdout;
-            } catch (e) {
-                if (isExecError(e)) {
-                    console.error("Execution error:", e.stderr?.toString());
-                    return "";
-                } else {
-                    throw e;
-                }
+            const code = await execPiped(
+                `${TEMP_DIR}/problem.out ${args.join(" ")}`
+            );
+            if (code != 0) {
+                throw new Error(`Execution failed with code ${code}`);
             }
         },
         teardown: async (_sourcePath: string) => {
