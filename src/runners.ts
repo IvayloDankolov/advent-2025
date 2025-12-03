@@ -47,6 +47,16 @@ const languageRunners = {
             await unlink(`${TEMP_DIR}/problem.out`);
         },
     },
+    lua: {
+        subfolder: "lua",
+        fileExtension: "lua",
+        run: async (sourcePath: string, args: string[]) => {
+            const code = await execPiped(`lua ${sourcePath} ${args.join(" ")}`);
+            if (code != 0) {
+                throw new Error(`Execution failed with code ${code}`);
+            }
+        },
+    },
 } as const satisfies Record<string, Runner>;
 
 export type Language = keyof typeof languageRunners;
