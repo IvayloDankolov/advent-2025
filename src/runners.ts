@@ -57,6 +57,35 @@ const languageRunners = {
             }
         },
     },
+    swift: {
+        subfolder: "swift",
+        fileExtension: "swift",
+
+        setup: async (sourcePath: string) => {
+            try {
+                await exec(`swiftc -o ${TEMP_DIR}/problem.out ${sourcePath}`);
+                return true;
+            } catch (e) {
+                if (isExecError(e)) {
+                    console.error("Compilation error:", e.stderr?.toString());
+                    return false;
+                } else {
+                    throw e;
+                }
+            }
+        },
+        run: async (_sourcePath: string, args: string[]) => {
+            const code = await execPiped(
+                `${TEMP_DIR}/problem.out ${args.join(" ")}`
+            );
+            if (code != 0) {
+                throw new Error(`Execution failed with code ${code}`);
+            }
+        },
+        teardown: async (_sourcePath: string) => {
+            await unlink(`${TEMP_DIR}/problem.out`);
+        },
+    },
 } as const satisfies Record<string, Runner>;
 
 export type Language = keyof typeof languageRunners;
