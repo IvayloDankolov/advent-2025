@@ -1,5 +1,7 @@
 import Foundation
 
+let batteryComponents = 12
+
 enum ParseError: Error {
     case invalidNumericCharacter
 }
@@ -17,13 +19,21 @@ func parseJoltages(_ lines: [Substring]) throws -> [[Int]] {
     }
 }
 
-func largestPossibleJoltage(_ subjoltages: [Int]) -> Int {
-    let firstDigit = subjoltages.dropLast().max()!
+func largestPossibleJoltage<C: Collection>(_ subjoltages: C, components numComponents: Int) -> Int where C.Element == Int {
+    
+    if numComponents <= 0 {
+        return 0
+    }
+
+    let firstDigit = subjoltages.dropLast(numComponents-1).max()!
     let index = subjoltages.firstIndex(of: firstDigit)!
 
-    let secondDigit = subjoltages[(index+1)...].max()!
+    let nextIndex = subjoltages.index(after: index)
+    let remainingSubjoltages = subjoltages[nextIndex...]
+    let remainingValue = largestPossibleJoltage(remainingSubjoltages, components: numComponents - 1)
 
-    return firstDigit * 10 + secondDigit
+    // This wouldn't really work for more than 54-bit integers but I don't care enough for this use case
+    return firstDigit * Int(pow(10.0, Double(numComponents - 1))) + remainingValue
 }
 
 let args = CommandLine.arguments
@@ -47,6 +57,6 @@ guard let joltages = try? parseJoltages(lines) else {
     exit(1)
 }
 
-let largestSum = joltages.map { largestPossibleJoltage($0) }.reduce(0, +)
+let largestSum = joltages.map { largestPossibleJoltage($0, components: batteryComponents) }.reduce(0, +)
 
 print(largestSum)
