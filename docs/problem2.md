@@ -42,3 +42,61 @@ Feels like it should also be pretty easy to generate them though. Take a random 
 And that feels so light that we shouldn't need to do absolutely any caching so let's just go.
 
 Yep, that turned out as straightforward as possible, basically. We'll leave it here since I'm out of time for part 2 at this point
+
+## Part 2 first impressions
+
+Aww, and here I was b etting on the twist being palindromes. That would of course be too easy.
+There goes my beautiful, efficient p1 solution that involves absolutely no iteration of any numbers in the ranges except the right ones.
+
+Although all hope is not necessarily lost. HEre's some interesting observations in no particular order:
+
+### INCLUSION
+
+Let's call TN(k) all tautological numbers made of a base part of k digits and TN(k, x) the subset of TN(k) numbers that are x digits long. It's clear that `TN(a * k, x>= 2*a*k) ∋ TN(k, x>= 2*a\*k)`.
+
+As much as I don't want to say oh that's obvious, we'll leave the proof as an exercise to the reader, I can't be bothered actually formally proving it. It's just a simple observation. If we're looking at an 8 digit range, we don't have to iterate over all TN(2) and then TN(4), anything 2 digit base you pick like say 53 to get 53535353 you can clearly achieve the same by picking the 4-digit base 5353 and getting 53535353.
+
+Conversely, if we're looking at 2 TN groups that aren't an exact multiple of each other, they will not share most members. The troubling detail here, though, is that word "most". Because every number is multiple of 1, TN(1, x) in every TN(n, x) and so trying to sum up different groups we'll always overcount the numbers that are made of just one digit. Another complication when extending this to really big numbers is if you end up using two compound classes that contain some of the same bases, e.g. 8 and 6 both contain 2.
+
+So what classes would we theoretically have to look at for a 12 digit number
+
+```
+TN(6, 12) ∪ TN(4, 12)
+```
+
+And that's it, really. But, that union hides a pretty big complexity of how much we're overcounting. Because if we were to sum, we'd have to do
+
+```
+sum(TN(6, 12)) + sum(TN(4, 12)) - sum(TN(2, 12))
+```
+
+by the inclusion/exclusion principle to avoid double counting. Notice that this doesn't correct for TN(1, 12), because we count it twice and substract it once, so it already self corrected.
+
+### Hard coding
+
+Yeah that will be fun. I think at this point it's easier to just throw an actual set at it and live with the memory tradeoff. Or we just hardcode the sums for numbers up to 10 digits since most of them are pretty trivial:
+
+1. TN(1, 1)
+2. TN(1, 2)
+3. TN(1, 3)
+4. TN(2, 4)
+5. TN(1, 5)
+6. TN(2, 6) + TN(3, 6) - TN(1, 6)
+7. TN(1, 7)
+8. TN(4, 8)
+9. TN(3, 9)
+10. TN(2, 10) + TN(5, 10) - TN(1, 10)
+
+Also if I were a betting man I'd wager a lot of people who optimized away all the odd numbers now forget that 9 = 3\*3
+
+Of course, when we're only restricting ourselves to certain sub-ranges and not just every x-digit number and this would also require the finessing we did in part 1 to find the valid tautological indexes within that range.
+
+But would it really be satisfying if we used meta information about the input to 'cheat' at solving this?
+
+Alright screw it we're doing sets.
+
+### Result
+
+Does it feel a bit anticlimactic just basically brute forcing it? I mean yes but in the first 10 billion numbers there's only 100k tautological numbers even with this expanded definition.
+
+There's no way to justify using anything other than a hash set on this when the whole damned thing takes 20-30 milliseconds to compute in Lua. And as a bonus there's no random sum errors that I have to debug because I messed up the exclusion/exclusion math, it just works (tm)
