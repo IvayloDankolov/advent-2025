@@ -8,7 +8,11 @@ if (process.argv.length < 3) {
 }
 
 const ACCESSIBLE_BELOW = 4;
-function isAccessibleRoll(grid: Grid, row: number, column: number): boolean {
+function isAccessibleRoll(
+    grid: Grid<Tile>,
+    row: number,
+    column: number
+): boolean {
     return (
         grid[row]?.[column] === Tile.Roll &&
         It.countIf(
