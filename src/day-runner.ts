@@ -1,6 +1,7 @@
 import { mkdir } from "fs/promises";
 import { TEMP_DIR } from "./constants.js";
-import languageRunners, { Runner } from "./runners.js";
+import { Runner } from "./runner-helpers.js";
+import languageRunners from "./runners.js";
 import { dirExists, fileExists } from "./utils.js";
 
 const problemPath = (dayId: string, language: string, ext: string): string => {
