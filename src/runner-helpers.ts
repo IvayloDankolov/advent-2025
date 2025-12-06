@@ -1,12 +1,13 @@
 import child from "child_process";
 import { unlink } from "fs/promises";
+import path from "path";
 import { promisify } from "util";
 import { TEMP_DIR } from "./constants.js";
 import { execPiped, isExecError } from "./utils.js";
 
 const exec = promisify(child.exec);
 
-const DEFAULT_TMP_BINARY_PATH = `${TEMP_DIR}/problem.out`;
+export const DEFAULT_TMP_BINARY_NAME = path.join(TEMP_DIR, "problem.out");
 
 export type Runner = {
     subfolder: string;
@@ -16,7 +17,8 @@ export type Runner = {
     run: (sourcePath: string, args: string[]) => Promise<void>;
     teardown?: (sourcePath: string) => Promise<void>;
 };
-const compilerExecutor = (
+
+export const compilerExecutor = (
     compilerCommand: (outDir: string, sourcePath: string) => string
 ) => {
     return async (sourcePath: string) => {
@@ -33,7 +35,7 @@ const compilerExecutor = (
         }
     };
 };
-const compiledBinaryExecutor = (binaryPath: string) => {
+export const compiledBinaryExecutor = (binaryPath: string) => {
     return async (_sourcePath: string, args: string[]) => {
         const code = await execPiped(`${binaryPath} ${args.join(" ")}`);
         if (code != 0) {
@@ -41,15 +43,16 @@ const compiledBinaryExecutor = (binaryPath: string) => {
         }
     };
 };
-const defaultDeleter = async () => {
-    await unlink(`${TEMP_DIR}/problem.out`);
+
+export const defaultDeleter = async () => {
+    await unlink(DEFAULT_TMP_BINARY_NAME);
 };
 export const defaultCompilerSetup = (
     compilerCommand: (outDir: string, sourcePath: string) => string
 ) => {
     return {
         setup: compilerExecutor(compilerCommand),
-        run: compiledBinaryExecutor(DEFAULT_TMP_BINARY_PATH),
+        run: compiledBinaryExecutor(DEFAULT_TMP_BINARY_NAME),
         teardown: defaultDeleter,
     };
 };

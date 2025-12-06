@@ -25,3 +25,13 @@ You're probably not going to get beaten by a for loop doing that for input this 
 Anyway, let's get into it and see if I can properly get into the go mood. Reject abstraction, embrace for loops.
 
 That took a hot minute and it's 120 lines of pure for loop. We only had to lambda 2 times because even go isn't insane enough to not have builtin sort and binary partition I guess. Perfection!
+
+## Part 2 impressions
+
+See folks, that's why you do not brute force. 1/100 times it may or may not pay off. Premature optimization is the key to success. That's how that famous saying goes, right? Right?
+
+Also I do find it amusing that if I had actually bothered to fully remove overlapping ranges rather than just the redundant ones I could've gotten away with not touching anything other than the last 3 lines. Now I have tweak one line in the cleaner too. Sadness.
+
+Oh no, I forgot how anal Go is about packages. I guess the runner idea is just impossible the way it's organized right now and I need janky hacks to get around it. Even more sadness.
+
+That was such an enormous waste of time. Let's solve the actual thing in 10 seconds now, I guess...

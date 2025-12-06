@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func Run5a(filename string) {
+func Run5b(filename string) {
 	f, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("Give me a real file dumbass")

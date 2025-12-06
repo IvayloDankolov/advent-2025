@@ -1,8 +1,13 @@
+import path from "path";
 import {
+    compilerExecutor,
+    DEFAULT_TMP_BINARY_NAME,
     defaultCompilerSetup,
+    defaultDeleter,
     Runner,
     scriptExecutor,
 } from "./runner-helpers.js";
+import { execPiped } from "./utils.js";
 
 const languageRunners = {
     cpp: {
@@ -37,10 +42,29 @@ const languageRunners = {
         subfolder: "go",
         fileExtension: "go",
 
-        ...defaultCompilerSetup(
-            (outDir: string, sourcePath: string) =>
-                `go build -o ${outDir}/problem.out ${sourcePath}`
-        ),
+        // Since go is a whiny bitch about packages and there's no possible way to
+        // either have 2 mains in the same package or 2 mains in different packages
+        // if the files are in the same folder, we have to get creative
+        setup: compilerExecutor((_outDir: string, sourcePath: string) => {
+            const containingFolder = path.dirname(sourcePath);
+            const outFileAbsolute = path.resolve(DEFAULT_TMP_BINARY_NAME);
+            return `cd ${containingFolder} && go build -o ${outFileAbsolute}`;
+        }),
+        run: async (sourcePath: string, args: string[]) => {
+            const binaryPath = DEFAULT_TMP_BINARY_NAME;
+            const code = await execPiped(
+                `${binaryPath} ${sourcePath} ${args.join(" ")}`
+            );
+            if (code != 0) {
+                throw new Error(`Execution failed with code ${code}`);
+            }
+        },
+        teardown: defaultDeleter,
+
+        // ...defaultCompilerSetup(
+        //     (outDir: string, sourcePath: string) =>
+        //         `go build -o ${outDir}/problem.out ${sourcePath}`
+        // ),
     },
 } as const satisfies Record<string, Runner>;
 
