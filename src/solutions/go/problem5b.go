@@ -17,15 +17,13 @@ func Run5b(filename string) {
 	scanner := bufio.NewScanner(f)
 
 	ranges := ParseRanges(scanner)
-	ids := ParseIDs(scanner)
-
 	cleanRanges := OrganizeRanges(ranges)
 
 	countFresh := int64(0)
-	for _, id := range ids {
-		if RangesContainID(cleanRanges, id) {
-			countFresh++
-		}
+
+	for _, r := range cleanRanges {
+		// Again, remember that ranges are inclusive
+		countFresh += r.end - r.start + 1
 	}
 
 	fmt.Printf("%d\n", countFresh)

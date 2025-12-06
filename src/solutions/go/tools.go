@@ -57,6 +57,11 @@ func OrganizeRanges(ranges []Range) []Range {
 			// Remember they're sorted so we're guaranteed r.start >= last.start
 			continue
 		}
+
+		if r.start <= last.end {
+			last.end = r.end
+			continue
+		}
 		removedReduntant = append(removedReduntant, r)
 	}
 
