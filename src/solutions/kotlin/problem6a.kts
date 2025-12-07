@@ -10,8 +10,10 @@ sealed interface Row {
     data class Operations(val operations: ArrayList<Operation>) : Row
 }
 
+val whitespace = Regex("\\s+")
+
 fun parseRow(line: String): Row {
-    val tokens = line.split(" ").map { it.trim() }.filter { it.isNotEmpty() }
+    val tokens = line.trim().split(whitespace)
     if (tokens.isEmpty()) {
         throw IllegalArgumentException("Empty line")
     }
