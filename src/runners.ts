@@ -66,6 +66,14 @@ const languageRunners = {
         fileExtension: "kts",
         run: scriptExecutor("kotlinc -script"),
     },
+    rust: {
+        subfolder: "rust",
+        fileExtension: "rs",
+        ...defaultCompilerSetup(
+            (outDir: string, sourcePath: string) =>
+                `rustc -o ${outDir}/problem.out ${sourcePath}`
+        ),
+    },
 } as const satisfies Record<string, Runner>;
 
 export type Language = keyof typeof languageRunners;
