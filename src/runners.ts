@@ -60,11 +60,11 @@ const languageRunners = {
             }
         },
         teardown: defaultDeleter,
-
-        // ...defaultCompilerSetup(
-        //     (outDir: string, sourcePath: string) =>
-        //         `go build -o ${outDir}/problem.out ${sourcePath}`
-        // ),
+    },
+    kotlinScript: {
+        subfolder: "kotlin",
+        fileExtension: "kts",
+        run: scriptExecutor("kotlinc -script"),
     },
 } as const satisfies Record<string, Runner>;
 
