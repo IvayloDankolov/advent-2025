@@ -52,3 +52,15 @@ Hey, first try! The meat of it is basically gradually painting the shortest netw
 ```
 
 We start with n networks labeled 0...(n-1) and each time we connect an edge `[a,b]` we wipe out `paint[b]` and replace it with `paint[a]` everywhere. Again this is quadratic as currently written. You could reduce this with some Sets and a more clever representation so re-keying a group is quicker, but I guess I'm committed to not over-complicating it at this point.
+
+## Part 2 impressions
+
+OK, again they could've asked us something a lot more evil in here, like what's the most you can connect this graph using a certain length of cable, which would have definitely made me sad on Monday after work.
+
+Instead, it continues to be sort of spelled out for us in that we must follow this greedy procedure to the letter.
+
+In theory you can reuse everything, though if the problem is particularly evil, like having 1 box a million units away, we jump up to an `O(n^3)` without optimisation which starts getting a tad scary.
+
+I'm tired and I wanted my star so I didn't even bother expressing this functionally. We have a tail recursion loop built in and we'll bloody well use it.
+
+I'll probably do a postmortem when I'm a bit more rested.
