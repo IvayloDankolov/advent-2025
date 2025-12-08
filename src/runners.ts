@@ -74,6 +74,11 @@ const languageRunners = {
                 `rustc -o ${outDir}/problem.out ${sourcePath}`
         ),
     },
+    clojure: {
+        subfolder: "clojure",
+        fileExtension: "clj",
+        run: scriptExecutor("clj -M"),
+    },
 } as const satisfies Record<string, Runner>;
 
 export type Language = keyof typeof languageRunners;

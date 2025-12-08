@@ -4,6 +4,10 @@ tmp/
 # Private inputs
 input/private
 
+# Clojure /vs-code stuff
+.clj-kondo/
+.lsp/
+
 # Can you tell I copy pasted the below stuff
 
 # Dependencies
