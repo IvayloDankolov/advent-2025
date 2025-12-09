@@ -79,6 +79,11 @@ const languageRunners = {
         fileExtension: "clj",
         run: scriptExecutor("clj -M"),
     },
+    haskell: {
+        subfolder: "haskell",
+        fileExtension: "hs",
+        run: scriptExecutor("runhaskell"),
+    },
 } as const satisfies Record<string, Runner>;
 
 export type Language = keyof typeof languageRunners;
